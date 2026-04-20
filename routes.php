@@ -2,7 +2,7 @@
 
 use App\Controllers\MapController;
 use PXP\Router\Route;
-use PXP\Http\Controllers\AssetController;
+use App\Controllers\AssetController;
 use App\Controllers\ImageController;
 
 Route::get('/')->do(MapController::class, 'index');

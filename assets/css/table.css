@@ -1,0 +1,25 @@
+table.styled {
+    border-collapse: collapse;
+}
+
+table.styled thead {
+    background-color: var(--thead-background);
+}
+
+table.styled th {
+    border-bottom: 1px var(--tborder) solid;
+    color: var(--th-color);
+    text-align: left;
+    padding: 0.75rem;
+}
+
+table.styled td {
+    border-bottom: 1px var(--tborder) solid;
+    color: var(--td-color);
+    text-align: left;
+    padding: 0.75rem;
+}
+
+table.styled tr:hover {
+    background-color: var(--tr-background-hover);
+}

@@ -1,0 +1,12 @@
+.notification {
+    color: var(--notification-color);
+    background: var(--notification-background);
+    border: 1px solid var(--notification-border);
+    padding: 8px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    margin-bottom: 1rem;
+}

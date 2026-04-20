@@ -14,7 +14,14 @@
     <input type="text" required minlength="2" maxlength="100" name="author" id="author" value="{{ session()->take('author') }}" />
 
     <label for="photo"><b>Foto</b></label>
-    <input type="file" required name="photo" id="photo" />
+    <div class="file-input-wrapper">
+        <input type="file" id="photo" name="photo" required accept="image/*" />
+        <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-text" id="dropText">
+                Foto wählen oder hierher ziehen <span>JPG bis 10 MB</span>
+            </div>
+        </div>
+    </div>
 
     <div class="row mt end">
         <a href="/" class="btn">Zurück</a>
