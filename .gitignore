@@ -1,0 +1,7 @@
+database
+log
+vendor
+storage
+photos
+cache
+.env

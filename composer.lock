@@ -1,0 +1,224 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "5dd3c61860fed030a3ad373072b24b75",
+    "packages": [
+        {
+            "name": "leonickl/plate",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leonickl/plate.git",
+                "reference": "558454bdf534410e5539629caa221ad3db83d3ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leonickl/plate/zipball/558454bdf534410e5539629caa221ad3db83d3ad",
+                "reference": "558454bdf534410e5539629caa221ad3db83d3ad",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LeoNickl\\Plate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Leo Nickl",
+                    "email": "leo@leonickl.de"
+                }
+            ],
+            "description": "A PHP templating engine",
+            "support": {
+                "issues": "https://github.com/leonickl/plate/issues",
+                "source": "https://github.com/leonickl/plate/tree/v1.0.0"
+            },
+            "time": "2026-04-07T14:47:06+00:00"
+        },
+        {
+            "name": "leonickl/pxp-core",
+            "version": "v3.2.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leonickl/pxp-core.git",
+                "reference": "fe0d37ca2bf2bc5b23db42f13b8faa2a9f4bf155"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leonickl/pxp-core/zipball/fe0d37ca2bf2bc5b23db42f13b8faa2a9f4bf155",
+                "reference": "fe0d37ca2bf2bc5b23db42f13b8faa2a9f4bf155",
+                "shasum": ""
+            },
+            "require": {
+                "leonickl/plate": "^1.0",
+                "php": "^8.4"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.24"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "functions.php"
+                ],
+                "psr-4": {
+                    "PXP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Leo Nickl",
+                    "email": "leo@leonickl.de"
+                }
+            ],
+            "description": "Core functionality for leonickl/pxp",
+            "support": {
+                "issues": "https://github.com/leonickl/pxp-core/issues",
+                "source": "https://github.com/leonickl/pxp-core/tree/v3.2.6"
+            },
+            "time": "2026-04-07T16:03:00+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "laravel/pint",
+            "version": "v1.29.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/pint.git",
+                "reference": "bdec963f53172c5e36330f3a400604c69bf02d39"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/bdec963f53172c5e36330f3a400604c69bf02d39",
+                "reference": "bdec963f53172c5e36330f3a400604c69bf02d39",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-tokenizer": "*",
+                "ext-xml": "*",
+                "php": "^8.2.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.94.2",
+                "illuminate/view": "^12.54.1",
+                "larastan/larastan": "^3.9.3",
+                "laravel-zero/framework": "^12.0.5",
+                "mockery/mockery": "^1.6.12",
+                "nunomaduro/termwind": "^2.4.0",
+                "pestphp/pest": "^3.8.6",
+                "shipfastlabs/agent-detector": "^1.1.0"
+            },
+            "bin": [
+                "builds/pint"
+            ],
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "App\\": "app/",
+                    "Database\\Seeders\\": "database/seeders/",
+                    "Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                }
+            ],
+            "description": "An opinionated code formatter for PHP.",
+            "homepage": "https://laravel.com",
+            "keywords": [
+                "dev",
+                "format",
+                "formatter",
+                "lint",
+                "linter",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/pint/issues",
+                "source": "https://github.com/laravel/pint"
+            },
+            "time": "2026-03-12T15:51:39+00:00"
+        },
+        {
+            "name": "phpstan/phpstan",
+            "version": "2.1.50",
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
+                "reference": "d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-04-17T13:10:32+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "ext-pdo": "*"
+    },
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
+}
