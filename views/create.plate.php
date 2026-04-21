@@ -24,10 +24,8 @@
         </div>
     </div>
 
-    <p class="mt">Das Bild möglichst nicht mit dem Google-Foto-Picker,
-        sondern am besten <span class="highlight">über "Dateien" oder so hochladen</span>, sonst
-        kann es sein, dass die Koordinaten zurückgesetzt werden.
-        Oder am Laptop, da sollte es immer klappen.</p>
+    <p class="mt">Unter Android funktioniert das ganze nicht, da dort automatisch
+    	die Koordinaten entfernt werden. Dann einfach am Laptop hochladen, da sollte es immer klappen.</p>
 
     <div class="row mt end">
         <a href="/" class="btn">Zurück</a>

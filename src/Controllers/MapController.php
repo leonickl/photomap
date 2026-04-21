@@ -68,6 +68,16 @@ class MapController extends Controller
             return Redirect::path('/create');
         }
 
+        if ($location === false) {
+            session([
+                'title' => $title,
+                'author' => $author,
+                'error' => 'Sieht so aus, als wären die Geodaten beim Upload gelöscht worden.',
+            ]);
+
+            return Redirect::path('/create');
+        }
+
         $filename = time().'-'.uniqid().'.'.pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
         $full_path = path('photos/'.$filename);
 

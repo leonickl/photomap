@@ -14,7 +14,7 @@ class Marker extends Model
 {
     protected string $table = 'markers';
 
-    public function position(): ?array
+    public function position(): array|null|false
     {
         return self::getExifLocation(path("photos/$this->file"));
     }
@@ -33,7 +33,7 @@ class Marker extends Model
         $GPSLongitude = $exif['GPS']['GPSLongitude'];
 
         if ($GPSLatitudeRef === null || $GPSLongitudeRef === null) {
-            return null;
+            return false;
         }
 
         $lat_degrees = count($GPSLatitude) > 0 ? self::gpsToNum($GPSLatitude[0]) : 0;
