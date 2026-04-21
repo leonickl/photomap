@@ -1,9 +1,9 @@
 <?php
 
-use App\Controllers\MapController;
-use PXP\Router\Route;
 use App\Controllers\AssetController;
 use App\Controllers\ImageController;
+use App\Controllers\MapController;
+use PXP\Router\Route;
 
 Route::get('/')->do(MapController::class, 'index');
 Route::get('/create')->do(MapController::class, 'create');

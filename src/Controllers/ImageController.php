@@ -15,7 +15,7 @@ class ImageController
         $mime_type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), path("photos/$file"));
 
         if (! in_array($mime_type, ['image/jpeg'])) {
-            throw new RuntimeException("file type must be image/jpeg");
+            throw new RuntimeException('file type must be image/jpeg');
         }
 
         header("Content-Type: $mime_type");
