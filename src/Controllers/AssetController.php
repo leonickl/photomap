@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use RuntimeException;
+
 /**
  * A Controller able to serve static file like css sheets
  * that are provided by the framework. To serve your own
@@ -16,7 +18,7 @@ class AssetController
     public function css(string $file)
     {
         if (! preg_match('/^[a-zA-Z-]+$/', $file)) {
-            throw new Exception("Invalid CSS path '$file'");
+            throw new RuntimeException("Invalid CSS path '$file'");
         }
 
         header('Content-Type: text/css');
