@@ -15,7 +15,7 @@
 
     <label for="photo"><b>Foto</b></label>
     <div class="file-input-wrapper">
-        <input type="file" id="photo" name="photo" required accept="image/*" />
+        <input type="file" id="photo" name="photo" required accept="*/*" />
         <div class="drop-zone" id="dropZone">
             <div class="drop-zone-text" id="dropText">
                 Foto wählen oder hierher ziehen <span>JPG bis 10 MB</span>
