@@ -3,5 +3,5 @@
 return [
     'title' => 'Photo Map',
     'domain' => 'localhost',
-    'port' => 8085,
+    'port' => env('PORT', 8094),
 ];
