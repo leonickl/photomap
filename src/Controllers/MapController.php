@@ -26,19 +26,110 @@ class MapController extends Controller
         ]);
     }
 
-    public function store()
+    private function validateTitle(string $title): void
     {
-        $title = request('title');
-
         if (strlen($title) < 2 || strlen($title) > 100) {
             throw new ValidationException('title length must between 1 and 100');
         }
+    }
 
-        $author = request('author');
-
+    private function validateAuthor(string $author): void
+    {
         if (strlen($author) < 2 || strlen($author) > 100) {
             throw new ValidationException('author length must between 1 and 100');
         }
+    }
+
+    private function saveImage(string $imageData, string $extension): string
+    {
+        $filename = time().'-'.uniqid().'.'.$extension;
+        $full_path = path('photos/'.$filename);
+
+        if (! file_exists(path('photos'))) {
+            mkdir(path('photos'));
+        }
+
+        if (file_put_contents($full_path, $imageData) === false) {
+            throw new RuntimeException('error saving image');
+        }
+
+        chmod($full_path, 0644);
+
+        return $filename;
+    }
+
+    public function camera()
+    {
+        return view('camera');
+    }
+
+    public function storeFromCamera()
+    {
+        $title = request('title');
+        $author = request('author');
+
+        $this->validateTitle($title);
+        $this->validateAuthor($author);
+
+        $imageData = request('image_data');
+
+        if (empty($imageData)) {
+            throw new ValidationException('no image data provided');
+        }
+
+        if (!preg_match('/^data:image\/(jpeg|jpg);base64,/', $imageData)) {
+            throw new ValidationException('invalid image format');
+        }
+
+        $imageData = substr($imageData, strpos($imageData, ',') + 1);
+        $decodedImage = base64_decode($imageData);
+
+        if ($decodedImage === false) {
+            throw new ValidationException('failed to decode image');
+        }
+
+        if (strlen($decodedImage) > 10_000_000) {
+            throw new ValidationException('image size must be 10 MB or smaller');
+        }
+
+        $lat = request()->float('lat');
+        $lon = request()->float('lon');
+
+        $location = null;
+        if ($lat !== 0.0 || $lon !== 0.0) {
+            $location = [$lat, $lon, true];
+        }
+
+        if ($location === null) {
+            session([
+                'title' => $title,
+                'author' => $author,
+                'error' => 'Keine GPS-Koordinaten verfügbar. Bitte erlaube den Standortzugriff oder wähle die Position manuell.',
+            ]);
+
+            return Redirect::path('/camera');
+        }
+
+        $filename = $this->saveImage($decodedImage, 'jpg');
+
+        Marker::create(
+            title: $title,
+            author: $author,
+            file: $filename,
+            lat: $location[0],
+            lon: $location[1],
+        );
+
+        return Redirect::path('/');
+    }
+
+    public function store()
+    {
+        $title = request('title');
+        $author = request('author');
+
+        $this->validateTitle($title);
+        $this->validateAuthor($author);
 
         if (@$_FILES['photo']['size'] === 0) {
             throw new ValidationException('no photo given');
@@ -93,18 +184,7 @@ class MapController extends Controller
             return Redirect::path('/create');
         }
 
-        $filename = time().'-'.uniqid().'.'.pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-        $full_path = path('photos/'.$filename);
-
-        if (! file_exists(path('photos'))) {
-            mkdir(path('photos'));
-        }
-
-        if (! move_uploaded_file($_FILES['photo']['tmp_name'], $full_path)) {
-            throw new RuntimeException('error moving uploaded image');
-        }
-
-        chmod($full_path, 0644); // Owner: rw-, Group: r--, Others: r--
+        $filename = $this->saveUploadedFile($_FILES['photo'], $extension);
 
         Marker::create(
             title: $title,
@@ -115,5 +195,23 @@ class MapController extends Controller
         );
 
         return Redirect::path('/');
+    }
+
+    private function saveUploadedFile(array $file, string $extension): string
+    {
+        $filename = time().'-'.uniqid().'.'.$extension;
+        $full_path = path('photos/'.$filename);
+
+        if (! file_exists(path('photos'))) {
+            mkdir(path('photos'));
+        }
+
+        if (! move_uploaded_file($file['tmp_name'], $full_path)) {
+            throw new RuntimeException('error moving uploaded image');
+        }
+
+        chmod($full_path, 0644);
+
+        return $filename;
     }
 }
