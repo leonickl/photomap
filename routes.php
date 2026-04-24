@@ -6,8 +6,10 @@ use App\Controllers\MapController;
 use PXP\Router\Route;
 
 Route::get('/')->do(MapController::class, 'index');
-Route::get('/create')->do(MapController::class, 'create');
-Route::post('/')->do(MapController::class, 'store');
+
+Route::get('/create')->do(MapController::class, 'upload');
+Route::post('/')->do(MapController::class, 'storeFromUpload');
+
 Route::get('/camera')->do(MapController::class, 'camera');
 Route::post('/camera')->do(MapController::class, 'storeFromCamera');
 

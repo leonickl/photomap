@@ -15,7 +15,7 @@ class MapController extends Controller
         return view('charte', ['markers' => Marker::all()], layout: 'map-layout');
     }
 
-    public function create()
+    public function upload()
     {
         $pos = request('pos');
 
@@ -26,21 +26,7 @@ class MapController extends Controller
         ]);
     }
 
-    private function validateTitle(string $title): void
-    {
-        if (strlen($title) < 2 || strlen($title) > 100) {
-            throw new ValidationException('title length must between 1 and 100');
-        }
-    }
-
-    private function validateAuthor(string $author): void
-    {
-        if (strlen($author) < 2 || strlen($author) > 100) {
-            throw new ValidationException('author length must between 1 and 100');
-        }
-    }
-
-    private function saveImage(string $imageData, string $extension): string
+    private function saveFile(callable $store, string $extension): string
     {
         $filename = time().'-'.uniqid().'.'.$extension;
         $full_path = path('photos/'.$filename);
@@ -49,7 +35,7 @@ class MapController extends Controller
             mkdir(path('photos'));
         }
 
-        if (file_put_contents($full_path, $imageData) === false) {
+        if ($store($full_path) === false) {
             throw new RuntimeException('error saving image');
         }
 
@@ -65,153 +51,142 @@ class MapController extends Controller
 
     public function storeFromCamera()
     {
-        $title = request('title');
-        $author = request('author');
+        return $this->store(function() {
+            $imageData = request('image_data');
 
-        $this->validateTitle($title);
-        $this->validateAuthor($author);
+            if (empty($imageData)) {
+                throw new ValidationException('no image data provided');
+            }
 
-        $imageData = request('image_data');
+            if (!preg_match('/^data:image\/(jpeg|jpg);base64,/', $imageData)) {
+                throw new ValidationException('invalid image format');
+            }
 
-        if (empty($imageData)) {
-            throw new ValidationException('no image data provided');
-        }
+            $decodedImage = base64_decode(substr($imageData, strpos($imageData, ',') + 1));
 
-        if (!preg_match('/^data:image\/(jpeg|jpg);base64,/', $imageData)) {
-            throw new ValidationException('invalid image format');
-        }
+            if ($decodedImage === false) {
+                throw new ValidationException('failed to decode image');
+            }
 
-        $imageData = substr($imageData, strpos($imageData, ',') + 1);
-        $decodedImage = base64_decode($imageData);
+            if (strlen($decodedImage) > 10_000_000) {
+                throw new ValidationException('image size must be 10 MB or smaller');
+            }
 
-        if ($decodedImage === false) {
-            throw new ValidationException('failed to decode image');
-        }
-
-        if (strlen($decodedImage) > 10_000_000) {
-            throw new ValidationException('image size must be 10 MB or smaller');
-        }
-
-        $lat = request()->float('lat');
-        $lon = request()->float('lon');
-
-        $location = null;
-        if ($lat !== 0.0 || $lon !== 0.0) {
-            $location = [$lat, $lon, true];
-        }
-
-        if ($location === null) {
-            session([
-                'title' => $title,
-                'author' => $author,
-                'error' => 'Keine GPS-Koordinaten verfügbar. Bitte erlaube den Standortzugriff oder wähle die Position manuell.',
-            ]);
-
-            return Redirect::path('/camera');
-        }
-
-        $filename = $this->saveImage($decodedImage, 'jpg');
-
-        Marker::create(
-            title: $title,
-            author: $author,
-            file: $filename,
-            lat: $location[0],
-            lon: $location[1],
-        );
-
-        return Redirect::path('/');
-    }
-
-    public function store()
-    {
-        $title = request('title');
-        $author = request('author');
-
-        $this->validateTitle($title);
-        $this->validateAuthor($author);
-
-        if (@$_FILES['photo']['size'] === 0) {
-            throw new ValidationException('no photo given');
-        }
-
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime_type = finfo_file($finfo, $_FILES['photo']['tmp_name']);
-        $extension = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
-
-        if (! in_array($extension, ['jpg', 'jpeg'])) {
-            throw new ValidationException('file extension must be jpg or jpeg');
-        }
-
-        if (! in_array($mime_type, ['image/jpeg'])) {
-            throw new ValidationException('file type must be image/jpeg');
-        }
-
-        if ($_FILES['photo']['size'] > 10_000_000) {
-            throw new ValidationException('file size must be 10 MB or smaller');
-        }
-
-        $location = Marker::getExifLocation($_FILES['photo']['tmp_name']);
-
-        if ($location === null || $location === false) {
             $lat = request()->float('lat');
             $lon = request()->float('lon');
 
-            if ($lat !== 0.0 || $lon !== 0.0) {
-                $location = [$lat, $lon, true]; // third element signals manual coordinates
+            if ($lat === 0.0 && $lon === 0.0) {
+                return (object)[
+                    'error' => 'Keine GPS-Koordinaten verfügbar. Bitte erlaube den
+                        Standortzugriff oder wähle die Position manuell.',
+                    'back' => 'camera',
+                ];
             }
+
+            $location = [$lat, $lon, true];
+
+            $filename = $this->saveFile(
+                fn(string $full_path) => file_put_contents($full_path, $decodedImage),
+                'jpg',
+            );
+
+            return (object)compact('location', 'filename');
+        });
+    }
+
+    public function storeFromUpload()
+    {
+        return $this->store(function () {
+            if (@$_FILES['photo']['size'] === 0) {
+                throw new ValidationException('no photo given');
+            }
+
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime_type = finfo_file($finfo, $_FILES['photo']['tmp_name']);
+            $extension = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
+
+            if (! in_array($extension, ['jpg', 'jpeg'])) {
+                throw new ValidationException('file extension must be jpg or jpeg');
+            }
+
+            if (! in_array($mime_type, ['image/jpeg'])) {
+                throw new ValidationException('file type must be image/jpeg');
+            }
+
+            if ($_FILES['photo']['size'] > 10_000_000) {
+                throw new ValidationException('file size must be 10 MB or smaller');
+            }
+
+            $location = Marker::getExifLocation($_FILES['photo']['tmp_name']);
+
+            if ($location === null || $location === false) {
+                $lat = request()->float('lat');
+                $lon = request()->float('lon');
+
+                if ($lat !== 0.0 || $lon !== 0.0) {
+                    $location = [$lat, $lon, true]; // third element signals manual coordinates
+                }
+            }
+
+            if ($location === null) {
+                return (object)[
+                    'error' => 'Keine Geodaten gefunden. Wähle bitte zuerst die Koordinaten
+                        auf der <a href="/">Karte</a> aus.',
+                    'back' => 'create',
+                ];
+            }
+
+            if ($location === false) {
+                return (object)[
+                    'error' => 'Sieht so aus, als wären die Geodaten beim Upload vom
+                        Handy gelöscht worden. Wähle bitte zuerst die Koordinaten
+                        auf der <a href="/">Karte</a> aus.',
+                    'back' => 'create',
+                ];
+            }
+
+            $filename = $this->saveFile(
+                fn(string $full_path) => move_uploaded_file($_FILES['photo']['tmp_name'], $full_path),
+                $extension,
+            );
+
+            return (object)compact('location', 'filename');
+        });
+    }
+
+    private function store(callable $processImage)
+    {
+        $title = request('title');
+        $author = request('author');
+
+        if (strlen($title) < 2 || strlen($title) > 100) {
+            throw new ValidationException('title length must between 1 and 100');
         }
 
-        if ($location === null) {
+        if (strlen($author) < 2 || strlen($author) > 100) {
+            throw new ValidationException('author length must between 1 and 100');
+        }
+
+        $image = $processImage();
+
+        if (isset($image->error)) {
             session([
                 'title' => $title,
                 'author' => $author,
-                'error' => 'Keine Geodaten gefunden. Wähle bitte zuerst die Koordinaten
-                    auf der <a href="/">Karte</a> aus.',
+                'error' => $image->error,
             ]);
 
-            return Redirect::path('/create');
+            return Redirect::path("/$image->back");
         }
-
-        if ($location === false) {
-            session([
-                'title' => $title,
-                'author' => $author,
-                'error' => 'Sieht so aus, als wären die Geodaten beim Upload vom Handy gelöscht worden.
-                    Wähle bitte zuerst die Koordinaten auf der <a href="/">Karte</a> aus.',
-            ]);
-
-            return Redirect::path('/create');
-        }
-
-        $filename = $this->saveUploadedFile($_FILES['photo'], $extension);
 
         Marker::create(
             title: $title,
             author: $author,
-            file: $filename,
-            lat: count($location) === 3 ? $location[0] : null,
-            lon: count($location) === 3 ? $location[1] : null,
+            file: $image->filename,
+            lat: @$image->location[2] ? $image->location[0] : null,
+            lon: @$image->location[2] ? $image->location[1] : null,
         );
 
         return Redirect::path('/');
-    }
-
-    private function saveUploadedFile(array $file, string $extension): string
-    {
-        $filename = time().'-'.uniqid().'.'.$extension;
-        $full_path = path('photos/'.$filename);
-
-        if (! file_exists(path('photos'))) {
-            mkdir(path('photos'));
-        }
-
-        if (! move_uploaded_file($file['tmp_name'], $full_path)) {
-            throw new RuntimeException('error moving uploaded image');
-        }
-
-        chmod($full_path, 0644);
-
-        return $filename;
     }
 }
