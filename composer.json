@@ -20,6 +20,11 @@
             "email": "leo@leonickl.de"
         }
     ],
+    "require": {
+    	"ext-exif": "*",
+    	"ext-fileinfo": "*",
+    	"ext-sqlite3": "*"
+    },
     "require-dev": {
         "laravel/pint": "^1.24",
         "phpstan/phpstan": "^2.1"
