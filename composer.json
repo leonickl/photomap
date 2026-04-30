@@ -4,7 +4,14 @@
     "type": "project",
     "require": {
         "ext-pdo": "*",
-        "leonickl/pxp-core": "^3.2.0"
+        "leonickl/pxp-core": "^3.2.0",
+    	"ext-exif": "*",
+    	"ext-fileinfo": "*",
+    	"ext-sqlite3": "*"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.24",
+        "phpstan/phpstan": "^2.1"
     },
     "autoload": {
         "psr-4": {
@@ -19,14 +26,5 @@
             "name": "Leo Nickl",
             "email": "leo@leonickl.de"
         }
-    ],
-    "require": {
-    	"ext-exif": "*",
-    	"ext-fileinfo": "*",
-    	"ext-sqlite3": "*"
-    },
-    "require-dev": {
-        "laravel/pint": "^1.24",
-        "phpstan/phpstan": "^2.1"
-    }
+    ]
 }
