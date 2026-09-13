@@ -1,6 +1,7 @@
 <div id="map"></div>
 
-<a id="add-btn" href="/create">+</a>
+<a id="add-btn" href="/create" title="Foto hochladen">+</a>
+<a id="camera-btn" href="/camera" title="Foto aufnehmen">📷</a>
 
 <style>
     #map {
@@ -11,7 +12,7 @@
     #add-btn, #add-btn:visited {
         position: fixed;
         top: 1rem;
-        right: 1rem;
+        right: 5rem;
         background: blue;
         height: 3rem;
         width: 3rem;
@@ -23,6 +24,24 @@
         border: 2px white solid;
         text-decoration: none;
         text-align: center;
+    }
+
+    #camera-btn, #camera-btn:visited {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        background: #28a745;
+        height: 3rem;
+        width: 3rem;
+        z-index: 1000;
+        color: white;
+        border-radius: 50%;
+        font-size: 28px;
+        font-weight: bolder;
+        border: 2px white solid;
+        text-decoration: none;
+        text-align: center;
+        line-height: 2.8rem;
     }
 
     .open-image {
