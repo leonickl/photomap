@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3115873ed895717886605c416789cd41",
+    "content-hash": "5cd1442c8b68c0304e331e3068faa33d",
     "packages": [
         {
             "name": "leonickl/plate",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leonickl/plate.git",
-                "reference": "558454bdf534410e5539629caa221ad3db83d3ad"
+                "reference": "65371b0eb86d84208eb681be9ffa9a12385039d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leonickl/plate/zipball/558454bdf534410e5539629caa221ad3db83d3ad",
-                "reference": "558454bdf534410e5539629caa221ad3db83d3ad",
+                "url": "https://api.github.com/repos/leonickl/plate/zipball/65371b0eb86d84208eb681be9ffa9a12385039d2",
+                "reference": "65371b0eb86d84208eb681be9ffa9a12385039d2",
                 "shasum": ""
             },
             "require": {
@@ -39,22 +39,22 @@
             "description": "A PHP templating engine",
             "support": {
                 "issues": "https://github.com/leonickl/plate/issues",
-                "source": "https://github.com/leonickl/plate/tree/v1.0.0"
+                "source": "https://github.com/leonickl/plate/tree/v1.0.1"
             },
-            "time": "2026-04-07T14:47:06+00:00"
+            "time": "2026-04-21T16:24:01+00:00"
         },
         {
             "name": "leonickl/pxp-core",
-            "version": "v3.2.7",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leonickl/pxp-core.git",
-                "reference": "589ecc1ae66e17156a1cb797d5f846bde9cccdf0"
+                "reference": "ce5ff45ba0d86b09f4c3ff0594319bc0eb51f32c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leonickl/pxp-core/zipball/589ecc1ae66e17156a1cb797d5f846bde9cccdf0",
-                "reference": "589ecc1ae66e17156a1cb797d5f846bde9cccdf0",
+                "url": "https://api.github.com/repos/leonickl/pxp-core/zipball/ce5ff45ba0d86b09f4c3ff0594319bc0eb51f32c",
+                "reference": "ce5ff45ba0d86b09f4c3ff0594319bc0eb51f32c",
                 "shasum": ""
             },
             "require": {
@@ -84,9 +84,9 @@
             "description": "Core functionality for leonickl/pxp",
             "support": {
                 "issues": "https://github.com/leonickl/pxp-core/issues",
-                "source": "https://github.com/leonickl/pxp-core/tree/v3.2.7"
+                "source": "https://github.com/leonickl/pxp-core/tree/v3.6.0"
             },
-            "time": "2026-04-20T17:25:32+00:00"
+            "time": "2026-04-30T21:58:33+00:00"
         }
     ],
     "packages-dev": [
@@ -160,11 +160,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.50",
+            "version": "2.1.54",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
-                "reference": "d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/8be50c3992107dc837b17da4d140fbbdf9a5c5bd",
+                "reference": "8be50c3992107dc837b17da4d140fbbdf9a5c5bd",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-17T13:10:32+00:00"
+            "time": "2026-04-29T13:31:09+00:00"
         }
     ],
     "aliases": [],
@@ -218,7 +218,10 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-exif": "*",
+        "ext-fileinfo": "*",
+        "ext-sqlite3": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"
