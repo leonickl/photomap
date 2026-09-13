@@ -51,14 +51,14 @@ class MapController extends Controller
 
     public function storeFromCamera()
     {
-        return $this->store(function() {
+        return $this->store(function () {
             $imageData = request('image_data');
 
             if (empty($imageData)) {
                 throw new ValidationException('no image data provided');
             }
 
-            if (!preg_match('/^data:image\/(jpeg|jpg);base64,/', $imageData)) {
+            if (! preg_match('/^data:image\/(jpeg|jpg);base64,/', $imageData)) {
                 throw new ValidationException('invalid image format');
             }
 
@@ -76,7 +76,7 @@ class MapController extends Controller
             $lon = request()->float('lon');
 
             if ($lat === 0.0 && $lon === 0.0) {
-                return (object)[
+                return (object) [
                     'error' => 'Keine GPS-Koordinaten verfügbar. Bitte erlaube den
                         Standortzugriff oder wähle die Position manuell.',
                     'back' => 'camera',
@@ -86,11 +86,11 @@ class MapController extends Controller
             $location = [$lat, $lon, true];
 
             $filename = $this->saveFile(
-                fn(string $full_path) => file_put_contents($full_path, $decodedImage),
+                fn (string $full_path) => file_put_contents($full_path, $decodedImage),
                 'jpg',
             );
 
-            return (object)compact('location', 'filename');
+            return (object) compact('location', 'filename');
         });
     }
 
@@ -129,7 +129,7 @@ class MapController extends Controller
             }
 
             if ($location === null) {
-                return (object)[
+                return (object) [
                     'error' => 'Keine Geodaten gefunden. Wähle bitte zuerst die Koordinaten
                         auf der <a href="/">Karte</a> aus.',
                     'back' => 'create',
@@ -137,7 +137,7 @@ class MapController extends Controller
             }
 
             if ($location === false) {
-                return (object)[
+                return (object) [
                     'error' => 'Sieht so aus, als wären die Geodaten beim Upload vom
                         Handy gelöscht worden. Wähle bitte zuerst die Koordinaten
                         auf der <a href="/">Karte</a> aus.',
@@ -146,11 +146,11 @@ class MapController extends Controller
             }
 
             $filename = $this->saveFile(
-                fn(string $full_path) => move_uploaded_file($_FILES['photo']['tmp_name'], $full_path),
+                fn (string $full_path) => move_uploaded_file($_FILES['photo']['tmp_name'], $full_path),
                 $extension,
             );
 
-            return (object)compact('location', 'filename');
+            return (object) compact('location', 'filename');
         });
     }
 

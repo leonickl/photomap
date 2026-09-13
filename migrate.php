@@ -1,8 +1,10 @@
 <?php
 
+use PXP\Data\DB;
+
 require __DIR__.'/vendor/autoload.php';
 
-$db = \PXP\Data\DB::init();
+$db = DB::init();
 
 $db->create('markers', [
     'title' => 'string not null',
